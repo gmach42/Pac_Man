@@ -11,14 +11,6 @@ class Border(IntFlag):
     WEST = 0b1000  # WEST = 8
 
 
-class Direction(Enum):
-    """"N/E/S/W avec dx, dy et le bit de mur associé"""
-    N = (0, -1, Border.NORTH)
-    E = (1, 0, Border.EAST)
-    S = (0, 1, Border.SOUTH)
-    W = (-1, 0, Border.WEST)
-
-
 class MazeError(Exception):
 
     def __init__(self, msg: str) -> None:
@@ -32,6 +24,13 @@ class Maze:
         self.height = height
         self.seed = seed
         self.perfect: bool = False
+        self.center = (self.width // 2, self.height // 2)
+        self.corners = [
+            (0, 0),
+            (self.width - 1, 0),
+            (0, self.height - 1),
+            (self.width - 1, self.height - 1)
+        ]
 
     def build_maze(self) -> MazeGenerator:
         try:
