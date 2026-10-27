@@ -1,5 +1,5 @@
 from mazegenerator import MazeGenerator
-from enum import IntFlag, Enum
+from enum import IntFlag
 
 
 class Border(IntFlag):
@@ -25,12 +25,8 @@ class Maze:
         self.seed = seed
         self.perfect: bool = False
         self.center = (self.width // 2, self.height // 2)
-        self.corners = [
-            (0, 0),
-            (self.width - 1, 0),
-            (0, self.height - 1),
-            (self.width - 1, self.height - 1)
-        ]
+        self.corners = [(0, 0), (self.width - 1, 0), (0, self.height - 1),
+                        (self.width - 1, self.height - 1)]
 
     def build_maze(self) -> MazeGenerator:
         try:
