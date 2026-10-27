@@ -1,7 +1,8 @@
 from mazegenerator import MazeGenerator
 
-w = 10
-h = 10
-gen = MazeGenerator(size=(w, h), perfect=False, seed=42)
-grid: list[list[int]] = gen.maze
-print(grid)
+
+def generate_maze(width: int,
+                  height: int,
+                  seed: int = 42,
+                  perfect: bool = False) -> MazeGenerator:
+    return MazeGenerator(size=(width, height), seed=seed, perfect=perfect)
