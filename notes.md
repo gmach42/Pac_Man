@@ -127,3 +127,11 @@
 	- Implementation
 	- General Software Architecture
 	- Project Management
+
+#TODO
+	class Direction(Enum):       # N/E/S/W avec dx, dy et le bit de mur associé
+	class GhostState(Enum):      # CHASE, FRIGHTENED, EATEN
+	class Maze:                  # width, height, has_wall(x, y, d), is_open(x, y), center, corners
+	class Player / Ghost:        # pos (case), direction, progress entre deux cases (0..1), state
+	class Level:                 # maze, player, ghosts, pacgums: set[pos], super_pacgums, time_left
+	class GameSession:           # score, lives, level_number, cheats, current_level, is_over, won
