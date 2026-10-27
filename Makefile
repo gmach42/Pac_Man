@@ -19,14 +19,15 @@ install:
 	uv sync
 
 run:
-	uv run python -m src
+	uv run python pac-man.py config.json
 
 debug:
-	uv run python -m pdb -m src
+	uv run python -m pdb pac-man.py config.json
 
 clean:
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name ".mypy_cache" -prune -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".pytest_cache" -prune -exec rm -rf {} + 2>/dev/null || true
 
 lint:
 	uv run flake8 $(LINT_PATHS)
