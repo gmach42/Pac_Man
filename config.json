@@ -1,12 +1,19 @@
 {
-	"level": 10,
+	# Highscores
+	"highscore_filename": "highscores.json",
+
+	# Maze
+	"levels": 10,
 	"width": 15,
 	"height": 15,
+	"seed": 42,
+	"level_max_time": 90,
+
+	# Player
 	"lives": 3,
-	"pacgum": 42,
+
+	# Scoring
 	"points_per_pacgum": 10,
 	"points_per_super_pacgum": 50,
-	"points_per_ghost": 200,
-	"seed": 42,
-	"level_max_time": 90
+	"points_per_ghost": 200
 }
