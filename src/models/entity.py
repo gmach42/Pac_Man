@@ -1,13 +1,6 @@
 from enum import Enum
 from src.maze.maze import Border
-
-
-class Direction(Enum):
-    """"N/E/S/W avec dx, dy et le bit de mur associé"""
-    N = (0, -1, Border.NORTH)
-    E = (1, 0, Border.EAST)
-    S = (0, 1, Border.SOUTH)
-    W = (-1, 0, Border.WEST)
+from abc import ABC, abstractmethod
 
 
 class Command(Enum):
@@ -28,12 +21,22 @@ class GhostState(Enum):
     EATEN = 3
 
 
-class Player:
+class Entity(ABC):
+
+    @abstractmethod
+    def __init__(self, pos, dir, progress, state):
+        self.pos = pos
+        self.dir = dir
+        self.progress = progress
+        self.state = state
+
+
+class Player(Entity):
     # pos, dir, progress, state
     pass
 
 
-class Ghost:
+class Ghost(Entity):
     # pos, dir, progress, state
     pass
 
