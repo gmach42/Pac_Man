@@ -8,3 +8,7 @@ class GameConfig:
     height: int
     seed: int
     perfect: bool = False
+
+
+def load_config(config: dict) -> GameConfig:
+    pass

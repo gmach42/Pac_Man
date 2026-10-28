@@ -1,0 +1,5 @@
+# Missing keys -> defaults ; unknown key -> ignored
+{
+    "width": 21,
+    "favorite_color": "yellow"
+}
