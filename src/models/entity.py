@@ -1,5 +1,4 @@
 from enum import Enum
-from src.maze.maze import Border
 from abc import ABC, abstractmethod
 
 
