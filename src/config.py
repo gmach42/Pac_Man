@@ -1,6 +1,7 @@
 import json
 import logging
 from dataclasses import asdict, dataclass
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -105,7 +106,7 @@ def read_config_file(path: str) -> dict[str, object]:
 def load_config(data: dict[str, object]) -> GameConfig:
     """Build a GameConfig from a JSON file. With clamping on bad values"""
     defaults = asdict(GameConfig())
-    values: dict[str, object] = {}
+    values: dict[str, Any] = {}
     for key, rule in RULES.items():
         if key not in data:
             logger.info("'%s' missing -> default %r", key, defaults[key])
@@ -114,4 +115,4 @@ def load_config(data: dict[str, object]) -> GameConfig:
             values[key] = _check(key, data[key], rule, defaults[key])
     for key in data.keys() - RULES.keys():
         logger.warning("unknown key '%s' ignored", key)
-    return GameConfig(**values)  # type: ignore[arg-type]
+    return GameConfig(**values)
