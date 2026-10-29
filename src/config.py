@@ -70,7 +70,7 @@ def _check(key: str, value: object, rule: Rule, default: object) -> object:
                        rule.kind.__name__, value, default)
         return default
     if isinstance(value, (int, float)) and not isinstance(value, bool):
-        if value < rule.low:
+        if rule.low is not None and value < rule.low:
             logger.warning(
                 "'%s'=%r below minimal value %r -> clamped",
                 key,
@@ -78,7 +78,7 @@ def _check(key: str, value: object, rule: Rule, default: object) -> object:
                 rule.low,
             )
             return rule.kind(rule.low)
-        if value > rule.high:
+        if rule.high is not None and value > rule.high:
             logger.warning(
                 "'%s'=%r above maximal value %r -> clamped",
                 key,
@@ -114,4 +114,4 @@ def load_config(data: dict[str, object]) -> GameConfig:
             values[key] = _check(key, data[key], rule, defaults[key])
     for key in data.keys() - RULES.keys():
         logger.warning("unknown key '%s' ignored", key)
-    return GameConfig(**values)
+    return GameConfig(**values)  # type: ignore[arg-type]

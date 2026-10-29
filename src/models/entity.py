@@ -1,5 +1,5 @@
 from enum import Enum
-from abc import ABC, abstractmethod
+# from abc import ABC, abstractmethod
 
 
 class Command(Enum):
@@ -20,22 +20,22 @@ class GhostState(Enum):
     EATEN = 3
 
 
-class Entity(ABC):
+# class Entity(ABC):
 
-    @abstractmethod
-    def __init__(self, pos, dir, progress, state):
-        self.pos = pos
-        self.dir = dir
-        self.progress = progress
-        self.state = state
+#     @abstractmethod
+#     def __init__(self, pos, dir: Direction, progress: , state):
+#         self.pos = pos
+#         self.dir = dir
+#         self.progress = progress
+#         self.state = state
 
 
-class Player(Entity):
+class Player:
     # pos, dir, progress, state
     pass
 
 
-class Ghost(Entity):
+class Ghost:
     # pos, dir, progress, state
     pass
 
