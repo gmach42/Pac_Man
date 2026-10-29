@@ -1,7 +1,11 @@
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.pycache/
-.vscode/
+*.py[cod]
+.venv/
 .mypy_cache/
+.pytest_cache/
+.ruff_cache/
+build/
+*.log
+highscores.json
+.vscode/
+
