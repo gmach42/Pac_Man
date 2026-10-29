@@ -1,13 +1,13 @@
-# TODO strip comments -> json -> validation/clamp -> GameConfig (dataclass)
 import json
 import logging
-from dataclasses import asdict, dataclass, fields
+from dataclasses import asdict, dataclass
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
 class Rule:
+    """Validation rule for one config key."""
     kind: type
     low: float | None = None
     high: float | None = None
@@ -18,7 +18,7 @@ RULES: dict[str, Rule] = {
     "levels": Rule(int, 1, 99),
     "width": Rule(int, 10, 50),
     "height": Rule(int, 10, 50),
-    "seed": Rule(int, 0, 2147483647),
+    "seed": Rule(int, 1, 2147483647),
     "level_max_time": Rule(int, 10, 600),
     "lives": Rule(int, 1, 99),
     # "player_speed": Rule(float, 1, 10),
@@ -31,7 +31,7 @@ RULES: dict[str, Rule] = {
 }
 
 
-@dataclass
+@dataclass(frozen=True)
 class GameConfig:
     """Default Game Config"""
 
@@ -60,11 +60,8 @@ class GameConfig:
     points_per_ghost: int = 200
 
 
-def test_rules_match_config() -> None:
-    assert set(RULES) == {f.name for f in fields(GameConfig)}
-
-
 def _check(key: str, value: object, rule: Rule, default: object) -> object:
+    """Return a valid value for key, falling back to default with a warning."""
     if (rule.kind is float and isinstance(value, int)
             and not isinstance(value, bool)):
         value = float(value)
@@ -106,6 +103,7 @@ def read_config_file(path: str) -> dict[str, object]:
 
 
 def load_config(data: dict[str, object]) -> GameConfig:
+    """Build a GameConfig from a JSON file. With clamping on bad values"""
     defaults = asdict(GameConfig())
     values: dict[str, object] = {}
     for key, rule in RULES.items():

@@ -26,11 +26,6 @@ def main() -> None:
         sys.exit(1)
     config = load_config(raw)
 
-    try:
-        maze: Maze = build_maze(config)
-    except Exception as e:
-        print(e)
-
 
 if __name__ == "__main__":
     try:
