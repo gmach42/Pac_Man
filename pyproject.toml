@@ -22,3 +22,7 @@ mazegenerator = { path = "mazegenerator-2.1.0-py3-none-any.whl" }
 
 [tool.ruff]
 line-length = 79
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
