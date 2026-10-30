@@ -1,27 +1,7 @@
-from enum import Enum, IntFlag
-
 from mazegenerator import MazeGenerator
 
 from src.config import GameConfig
-
-
-class Border(IntFlag):
-    """Represents the borders of a maze cell."""
-
-    EMPTY = 0
-    NORTH = 0b0001  # NORTH = 1
-    EAST = 0b0010  # EAST = 2
-    SOUTH = 0b0100  # SOUTH = 4
-    WEST = 0b1000  # WEST = 8
-
-
-class Direction(Enum):
-    """N/E/S/W avec dx, dy et le bit de mur associé"""
-
-    N = (0, -1, Border.NORTH)
-    E = (1, 0, Border.EAST)
-    S = (0, 1, Border.SOUTH)
-    W = (-1, 0, Border.WEST)
+from src.contract import Direction
 
 
 class MazeError(Exception):
