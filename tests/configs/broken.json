@@ -1,0 +1,5 @@
+# Invalid JSON (missing comma) -> clear error message, no traceback
+{
+    "width": 15
+    "height": 15
+}

@@ -1,0 +1,8 @@
+# Wrong types / out-of-range values -> must be clamped to defaults
+{
+    "width": -5,
+    "height": "big",
+    "seed": 42,
+    "lives": 0,
+    "level_max_time": 3.5
+}
