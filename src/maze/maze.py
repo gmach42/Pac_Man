@@ -4,153 +4,112 @@ from enum import IntFlag
 
 
 class Border(IntFlag):
-    """Represents the borders of a maze cell."""
     EMPTY = 0
-    NORTH = 0b0001  # NORTH = 1
-    EAST = 0b0010  # EAST = 2
-    SOUTH = 0b0100  # SOUTH = 4
-    WEST = 0b1000  # WEST = 8
+    NORTH = 0b0001
+    EAST = 0b0010
+    SOUTH = 0b0100
+    WEST = 0b1000
 
 
 class MazeError(Exception):
-
     def __init__(self, msg: str) -> None:
         super().__init__(f"MazeError:\n{msg}")
 
 
 class Maze:
-
-    def __init__(self, width: int, height: int, seed: int):
+    def __init__(self, width: int, height: int, seed: int, cell_size: int = 55, wall_width: int = 4):
         self.width = width
         self.height = height
         self.seed = seed
+        self.cell_size = cell_size
+        self.wall_width = wall_width
+        
         self.perfect: bool = False
         self.center = (self.width // 2, self.height // 2)
-        self.corners = [(0, 0), (self.width - 1, 0), (0, self.height - 1),
-                        (self.width - 1, self.height - 1)]
+        self.corners = [
+            (0, 0), 
+            (self.width - 1, 0), 
+            (0, self.height - 1),
+            (self.width - 1, self.height - 1)
+        ]
+        
         self.maze_generator = self.build_maze()
         self.grid = self.maze_generator.maze
         
         self.wallpaper = pygame.image.load('assets/wallpaper/wallpaper_game.png').convert()
-        
         self.wall = pygame.image.load('assets/wall/wall.png').convert_alpha()
         self.closed_wall = pygame.image.load('assets/wall/closed.png').convert_alpha()
 
     def build_maze(self) -> MazeGenerator:
         try:
-            maze = MazeGenerator(size=(self.width, self.height),
-                                 seed=self.seed,
-                                 perfect=self.perfect)
+            maze = MazeGenerator(
+                size=(self.width, self.height),
+                seed=self.seed,
+                perfect=self.perfect
+            )
         except Exception as e:
             raise MazeError(
-                "An error happened while trying to create a maze of "
-                f"{self.width=}, {self.height=}:\n{e}")
+                "Une erreur est survenue lors de la création du labyrinthe de "
+                f"{self.width=}, {self.height=}:\n{e}"
+            )
         return maze
 
     def draw(self, screen):
         screen_width, screen_height = screen.get_size()
 
         img_width, img_height = self.wallpaper.get_size()
-        scale = min(
-            screen_width / img_width,
-            screen_height / img_height
-        )
-
+        scale = min(screen_width / img_width, screen_height / img_height)
         new_width = int(img_width * scale)
         new_height = int(img_height * scale)
-
-        scaled_wallpaper = pygame.transform.scale(
-            self.wallpaper, (new_width, new_height)
-        )
-
+        scaled_wallpaper = pygame.transform.scale(self.wallpaper, (new_width, new_height))
+        
         screen.blit(
             scaled_wallpaper,
-            (
-                (screen_width - new_width) // 2,
-                (screen_height - new_height) // 2
-            )
+            ((screen_width - new_width) // 2, (screen_height - new_height) // 2)
         )
 
-        rows = len(self.grid)
-        cols = len(self.grid[0])
+        maze_total_width = self.width * self.cell_size
+        maze_total_height = self.height * self.cell_size
+        
+        offset_x = (screen_width - maze_total_width) // 2
+        offset_y = (screen_height - maze_total_height) // 2
 
-        cell_size = min(
-            screen_width // cols,
-            screen_height // rows
-        )
+        self.draw_maze_walls(screen, offset_x, offset_y)
 
-        offset_x = (screen_width - cols * cell_size) // 2
-        offset_y = (screen_height - rows * cell_size) // 2
+    def draw_maze_walls(self, screen, offset_x, offset_y):
+        for row in range(self.height):
+            for col in range(self.width):
+                cell_value = self.grid[row][col]
+                y = row * self.cell_size + offset_y
+                x = col * self.cell_size + offset_x
 
-        block_size = cell_size // 3
-
-        wall = pygame.transform.scale(
-            self.wall, (block_size, block_size)
-        )
-
-        closed_wall = pygame.transform.scale(
-            self.closed_wall, (cell_size, cell_size)
-        )
-
-        for y, row in enumerate(self.grid):
-            for x, cell in enumerate(row):
-                left = offset_x + x * cell_size
-                top = offset_y + y * cell_size
-                right = left + cell_size
-
-                if cell == 15:
-                    screen.blit(closed_wall, (left, top))
-                    continue
-
-                north = bool(cell & Border.NORTH)
-                west = bool(cell & Border.WEST)
-                east = bool(cell & Border.EAST)
-                south = bool(cell & Border.SOUTH)
-
-                if north and west:
-                    for i in range(3):
-                        screen.blit(
-                            wall,
-                            (left + i * block_size, top)
-                        )
-                    for i in range(3):
-                        screen.blit(
-                            wall,
-                            (left, top + i * block_size)
-                        )
-                        
-                elif north and not west:
-                    for i in range(3):
-                        screen.blit(
-                            wall,
-                            (left + i * block_size, top)
-                        )
-                
-                elif west and not north:
-                    for i in range(3):
-                        screen.blit(
-                            wall,
-                            (left, top + i * block_size)
-                        )
+                if cell_value != (Border.NORTH | Border.SOUTH | Border.EAST | Border.WEST):
                     
-
-                if x == cols - 1 and east:
-                    for i in range(3):
-                        screen.blit(
-                            wall,
-                            (
-                                right - block_size,
-                                top + i * block_size
-                            )
+                    if cell_value & Border.NORTH:
+                        pygame.draw.rect(
+                            screen, 
+                            (200, 200, 200), 
+                            (x, y, self.cell_size + self.wall_width, self.wall_width)
                         )
 
-                if y == rows - 1 and south:
-                    for i in range(3):
-                        screen.blit(
-                            wall,
-                            (
-                                left + i * block_size,
-                                top + cell_size - block_size
-                            )
+                    if cell_value & Border.SOUTH:
+                        pygame.draw.rect(
+                            screen, 
+                            (200, 200, 200), 
+                            (x, y + self.cell_size, self.cell_size + self.wall_width, self.wall_width)
+                        )
+
+                    if cell_value & Border.WEST:
+                        pygame.draw.rect(
+                            screen, 
+                            (200, 200, 200), 
+                            (x, y, self.wall_width, self.cell_size + self.wall_width)
+                        )
+
+                    if cell_value & Border.EAST:
+                        pygame.draw.rect(
+                            screen, 
+                            (200, 200, 200), 
+                            (x + self.cell_size, y, self.wall_width, self.cell_size + self.wall_width)
                         )
                 
