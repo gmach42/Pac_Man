@@ -1,6 +1,7 @@
 *This project has been created as part of the 42 curriculum by lucpelle and gmach.*
 
 
-Documentation
+## Documentation
 
 logging: https://docs.python.org/3/library/logging.html
+maze_gen: https://vcc-csc212.github.io/sp21-archive/dd2/
