@@ -1,31 +1,14 @@
-from enum import Enum
-from src.maze.maze import Border
+# from abc import ABC, abstractmethod
 
 
-class Direction(Enum):
-    """"N/E/S/W avec dx, dy et le bit de mur associé"""
-    N = (0, -1, Border.NORTH)
-    E = (1, 0, Border.EAST)
-    S = (0, 1, Border.SOUTH)
-    W = (-1, 0, Border.WEST)
+# class Entity(ABC):
 
-
-class Command(Enum):
-    """Represents possible commands for an entity."""
-    MOVE_NORTH = 1
-    MOVE_EAST = 2
-    MOVE_SOUTH = 3
-    MOVE_WEST = 4
-    PAUSE = 5
-    CONFIRM = 6
-    BACK = 7
-    ACTIVATE_CHEAT = 8
-
-
-class GhostState(Enum):
-    CHASE = 1
-    FRIGHTENED = 2
-    EATEN = 3
+#     @abstractmethod
+#     def __init__(self, pos, dir: Direction, progress: , state):
+#         self.pos = pos
+#         self.dir = dir
+#         self.progress = progress
+#         self.state = state
 
 
 class Player:

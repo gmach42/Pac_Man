@@ -1,4 +1,4 @@
-TARGETS := install run debug clean lint lint-strict
+TARGETS := install run debug clean lint lint-strict test_config test
 
 UNKNOWN_GOALS := $(filter-out $(TARGETS),$(MAKECMDGOALS))
 ifneq ($(UNKNOWN_GOALS),)
@@ -20,6 +20,14 @@ install:
 
 run:
 	uv run python pac-man.py config.json
+
+test_config:
+	@for f in tests/configs/*.json; do \
+		echo "$(RED)== $$f ==$(RESET)"; uv run python pac-man.py $$f; echo "exit=$$?"; \
+	done
+
+test:
+	uv run pytest -q
 
 debug:
 	uv run python -m pdb pac-man.py config.json

@@ -1,0 +1,9 @@
+# Minimal valid config, with comments
+{
+    # maze size (cells)
+    "width": 15,
+    "height": 15,
+    "seed": 42,
+    "lives": 3,
+    "level_max_time": 90
+}
